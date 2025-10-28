@@ -1,0 +1,219 @@
+﻿<Window x:Class="SmartNotes.MainWindow"
+        xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+        xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+        xmlns:local="clr-namespace:SmartNotes"
+        Title="SmartNotes — Sign In"
+        Height="560" Width="880"
+        WindowStartupLocation="CenterScreen"
+        ResizeMode="NoResize"
+        Background="Transparent">
+
+    <Window.Resources>
+        <!-- Helpers -->
+        <local:EmptyToVisibilityConverter x:Key="EmptyToVisibilityConverter"/>
+
+        <!-- Palette tuned to LOGO -->
+        <SolidColorBrush x:Key="BgCream" Color="#F5F2E9"/>
+        <!-- page background -->
+        <SolidColorBrush x:Key="Ink" Color="#424242"/>
+        <!-- primary text -->
+        <SolidColorBrush x:Key="InkSoft" Color="#6A6A6A"/>
+        <!-- secondary text -->
+        <SolidColorBrush x:Key="CardFill" Color="#FFFFFFFF"/>
+        <!-- white card -->
+        <SolidColorBrush x:Key="CardStroke" Color="#19000000"/>
+        <!-- light border -->
+        <SolidColorBrush x:Key="FieldFill" Color="#0D000000"/>
+        <!-- fillings-->
+        <SolidColorBrush x:Key="FieldStroke" Color="#33000000"/>
+        <SolidColorBrush x:Key="FieldStrokeFocus" Color="#66000000"/>
+        <SolidColorBrush x:Key="LinkBrush" Color="#424242"/>
+        <SolidColorBrush x:Key="BtnNormal" Color="#424242"/>
+        <SolidColorBrush x:Key="BtnHover" Color="#2F2F2F"/>
+
+        <!-- Inputs -->
+        <Style x:Key="RoundedInput" TargetType="TextBox">
+            <Setter Property="Foreground" Value="{StaticResource Ink}"/>
+            <Setter Property="Background" Value="{StaticResource FieldFill}"/>
+            <Setter Property="BorderBrush" Value="{StaticResource FieldStroke}"/>
+            <Setter Property="BorderThickness" Value="1.2"/>
+            <Setter Property="Padding" Value="12,12,40,12"/>
+            <Setter Property="FontSize" Value="16"/>
+            <Setter Property="Template">
+                <Setter.Value>
+                    <ControlTemplate TargetType="TextBox">
+                        <Grid>
+                            <Border x:Name="Root" CornerRadius="10"
+                                    Background="{TemplateBinding Background}"
+                                    BorderBrush="{TemplateBinding BorderBrush}"
+                                    BorderThickness="{TemplateBinding BorderThickness}"/>
+                            <ScrollViewer x:Name="PART_ContentHost" Margin="10,2,38,2"/>
+                            <TextBlock Text="{TemplateBinding Tag}" Margin="14,8,0,8"
+                                       Foreground="#88000000" IsHitTestVisible="False"
+                                       Visibility="{Binding Text, RelativeSource={RelativeSource TemplatedParent},
+                                                            Converter={StaticResource EmptyToVisibilityConverter}}"/>
+                        </Grid>
+                        <ControlTemplate.Triggers>
+                            <Trigger Property="IsKeyboardFocused" Value="True">
+                                <Setter TargetName="Root" Property="BorderBrush" Value="{StaticResource FieldStrokeFocus}"/>
+                            </Trigger>
+                        </ControlTemplate.Triggers>
+                    </ControlTemplate>
+                </Setter.Value>
+            </Setter>
+        </Style>
+
+        <!-- Login (Login/Register) button -->
+        <Style x:Key="PillButton" TargetType="Button">
+            <Setter Property="Foreground" Value="White"/>
+            <Setter Property="Background" Value="{StaticResource BtnNormal}"/>
+            <Setter Property="BorderBrush" Value="{x:Null}"/>
+            <Setter Property="FontWeight" Value="SemiBold"/>
+            <Setter Property="FontSize" Value="16"/>
+            <Setter Property="Padding" Value="12"/>
+            <Setter Property="Template">
+                <Setter.Value>
+                    <ControlTemplate TargetType="Button">
+                        <Border CornerRadius="12" Background="{TemplateBinding Background}">
+                            <ContentPresenter HorizontalAlignment="Center" VerticalAlignment="Center"/>
+                        </Border>
+                        <ControlTemplate.Triggers>
+                            <Trigger Property="IsMouseOver" Value="True">
+                                <Setter Property="Background" Value="{StaticResource BtnHover}"/>
+                            </Trigger>
+                            <Trigger Property="IsEnabled" Value="False">
+                                <Setter Property="Opacity" Value="0.6"/>
+                            </Trigger>
+                        </ControlTemplate.Triggers>
+                    </ControlTemplate>
+                </Setter.Value>
+            </Setter>
+        </Style>
+
+        <!-- Links -->
+        <Style x:Key="LinkText" TargetType="TextBlock">
+            <Setter Property="Foreground" Value="{StaticResource LinkBrush}"/>
+            <Setter Property="Cursor" Value="Hand"/>
+            <Setter Property="TextDecorations" Value="Underline"/>
+            <EventSetter Event="MouseLeftButtonUp" Handler="Link_Click"/>
+        </Style>
+    </Window.Resources>
+
+    <!-- Page background -->
+    <Grid Background="{StaticResource BgCream}">
+        <!-- Card -->
+        <Border Width="400" Height="492"
+                HorizontalAlignment="Center" VerticalAlignment="Center"
+                CornerRadius="16"
+                Background="{StaticResource CardFill}"
+                BorderBrush="{StaticResource CardStroke}" BorderThickness="1">
+            <Border.Effect>
+                <DropShadowEffect BlurRadius="24" ShadowDepth="6" Opacity="0.25" Color="#000000"/>
+            </Border.Effect>
+
+            <!-- Grid for stuff (Might be changed as I move things around. 3 versions so far) -->
+            <Grid Margin="22">
+                <Grid.RowDefinitions>
+                    <RowDefinition Height="Auto"/>
+                    <!-- logo -->
+                    <RowDefinition Height="14"/>
+                    <RowDefinition Height="Auto"/>
+                    <!-- title -->
+                    <RowDefinition Height="18"/>
+                    <RowDefinition Height="Auto"/>
+                    <!-- email -->
+                    <RowDefinition Height="10"/>
+                    <RowDefinition Height="Auto"/>
+                    <!-- password -->
+                    <RowDefinition Height="8"/>
+                    <RowDefinition Height="Auto"/>
+                    <!-- remember/forgot -->
+                    <RowDefinition Height="16"/>
+                    <RowDefinition Height="Auto"/>
+                    <!-- login button -->
+                    <RowDefinition Height="*"/>
+                    <RowDefinition Height="Auto"/>
+                    <!-- status -->
+                    <RowDefinition Height="10"/>
+                    <RowDefinition Height="Auto"/>
+                    <!-- footer -->
+                </Grid.RowDefinitions>
+
+                <!-- SmartNotes LOGO -->
+                <!-- TO DO: Fix the minor folder issue; -->
+                <!-- I have an issue with it displaying through a folder, even though I made both resources -->
+                <Image Grid.Row="0"
+                       Source="/SmartNotesLogoTrans.png"
+                       Width="340" Height="70"
+                       Stretch="Uniform" RenderOptions.BitmapScalingMode="HighQuality"/>
+
+                <!-- Title -->
+                <TextBlock Grid.Row="2"
+                           Text="{Binding ElementName=ModeToggle, Path=IsChecked, Converter={x:Static local:BoolToTitleConverter.Instance}}"
+                           FontSize="22" FontWeight="Bold" Foreground="{StaticResource Ink}"
+                           HorizontalAlignment="Center"/>
+
+                <!-- Email -->
+                <Grid Grid.Row="4">
+                    <TextBox x:Name="EmailBox" Style="{StaticResource RoundedInput}" Tag="Email"/>
+                    <!-- envelope icon -->
+                    <TextBlock FontFamily="Segoe MDL2 Assets" Text="&#xE715;"
+                               Foreground="#66000000" FontSize="16"
+                               HorizontalAlignment="Right" VerticalAlignment="Center" Margin="0,0,12,0"
+                               IsHitTestVisible="False"/>
+                </Grid>
+
+                <!-- Password and password icon -->
+                <Grid Grid.Row="6">
+                    <Border CornerRadius="10"
+                            Background="{StaticResource FieldFill}"
+                            BorderBrush="{StaticResource FieldStroke}" BorderThickness="1.2"/>
+                    <PasswordBox x:Name="PasswordBox"
+                                 PasswordChanged="PasswordBox_PasswordChanged"
+                                 Padding="12,12,40,12" FontSize="16"
+                                 Background="{x:Null}" BorderThickness="0"
+                                 Foreground="{StaticResource Ink}"/>
+                    <TextBlock x:Name="PwdWatermark" Text="Password"
+                               Margin="14,8,0,8" Foreground="#88000000"
+                               IsHitTestVisible="False"/>
+                    <TextBlock FontFamily="Segoe MDL2 Assets" Text="&#xE72E;"
+                               Foreground="#66000000" FontSize="16"
+                               HorizontalAlignment="Right" VerticalAlignment="Center" Margin="0,0,12,0"
+                               IsHitTestVisible="False"/>
+                </Grid>
+
+                <!-- Remember / Forgot -->
+                <Grid Grid.Row="8">
+                    <Grid.ColumnDefinitions>
+                        <ColumnDefinition/>
+                        <ColumnDefinition/>
+                    </Grid.ColumnDefinitions>
+                    <StackPanel Orientation="Horizontal" VerticalAlignment="Center">
+                        <CheckBox x:Name="RememberCheck" Margin="0,0,6,0"/>
+                        <TextBlock Text="Remember me" Foreground="{StaticResource Ink}" VerticalAlignment="Center"/>
+                    </StackPanel>
+                    <TextBlock Grid.Column="1" Text="Forgot Password?" HorizontalAlignment="Right"
+                               Style="{StaticResource LinkText}" Tag="forgot"/>
+                </Grid>
+
+                <!-- Login / Register -->
+                <Button Grid.Row="10" x:Name="LoginButton" Style="{StaticResource PillButton}"
+                        Content="{Binding ElementName=ModeToggle, Path=IsChecked, Converter={x:Static local:BoolToCtaConverter.Instance}}"
+                        Click="LoginButton_Click" Height="44"/>
+
+                <!-- Status text -->
+                <TextBlock Grid.Row="12" x:Name="StatusText" Text=""
+                           Foreground="{StaticResource InkSoft}" HorizontalAlignment="Center"/>
+
+                <!-- Footer links -->
+                <StackPanel Grid.Row="14" Orientation="Horizontal" HorizontalAlignment="Center">
+                    <TextBlock Text="Don't have an account? " Foreground="{StaticResource Ink}"/>
+                    <TextBlock Text="Register" Style="{StaticResource LinkText}" Tag="toggle"/>
+                </StackPanel>
+
+                <!-- Hidden toggle -->
+                <ToggleButton x:Name="ModeToggle" Visibility="Collapsed"/>
+            </Grid>
+        </Border>
+    </Grid>
+</Window>

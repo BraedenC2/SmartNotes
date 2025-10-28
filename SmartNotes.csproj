@@ -1,0 +1,23 @@
+﻿<Project Sdk="Microsoft.NET.Sdk">
+
+  <PropertyGroup>
+    <OutputType>WinExe</OutputType>
+    <TargetFramework>net8.0-windows</TargetFramework>
+    <Nullable>enable</Nullable>
+    <ImplicitUsings>enable</ImplicitUsings>
+    <UseWPF>true</UseWPF>
+  </PropertyGroup>
+
+  <ItemGroup>
+    <None Remove="Assets\SmartNotesLogo.png" />
+    <None Remove="Assets\SmartNotesLogoTrans.png" />
+    <None Remove="SmartNotesLogoTrans.png" />
+  </ItemGroup>
+
+  <ItemGroup>
+    <Resource Include="Assets\SmartNotesLogo.png" />
+    <Resource Include="Assets\SmartNotesLogoTrans.png" />
+    <Resource Include="SmartNotesLogoTrans.png" />
+  </ItemGroup>
+
+</Project>
