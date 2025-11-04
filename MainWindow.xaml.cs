@@ -181,10 +181,10 @@ namespace SmartNotes
             }
         }
 
+
+
         private async Task HandleSuccessfulSignIn(FirebaseAuthService.AuthResult result, bool silent = false)
         {
-
-            
             if (RememberCheck.IsChecked == true)
             {
                 // Makes SURE the directory exists before creating a file in a folder that may not exist yet
@@ -193,10 +193,14 @@ namespace SmartNotes
                     JsonSerializer.Serialize(new SavedSession { RefreshToken = result.RefreshToken }));
             }
 
-            // TODO: Proceed to the main app window
-            if (!silent)
-                MessageBox.Show("Signed in successfully.", "SmartNotes", MessageBoxButton.OK, MessageBoxImage.Information);
+            //if (!silent)
+            //    MessageBox.Show("Signed in successfully.", "SmartNotes", MessageBoxButton.OK, MessageBoxImage.Information);
+
+            var shell = new SmartNotesShell(result);
+            shell.Show();
+            this.Close();
         }
+
 
         private void DisableUi(bool busy)
         {
@@ -241,8 +245,8 @@ namespace SmartNotes
     // ____________________ Firebase REST STUFF ___________________
     // (no third-party SDKs needed btw)
 
-    // Most of this code was adapted, since I never used Firebase before:
-    internal static class FirebaseAuthService
+    // Most of this code was adopted, since I never used Firebase before:
+    public static class FirebaseAuthService
     {
         private static readonly HttpClient http = new();
 
