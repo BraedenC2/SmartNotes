@@ -1,0 +1,62 @@
+﻿<Window x:Class="SmartNotes.GeminiChatWindow"
+        xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+        xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+        xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
+        xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+        xmlns:local="clr-namespace:SmartNotes"
+        mc:Ignorable="d"
+        Title="GeminiChatWindow" Height="450" Width="800">
+    <Grid Margin="16">
+        <Grid.RowDefinitions>
+            <RowDefinition Height="Auto" />
+            <!-- Title -->
+            <RowDefinition Height="2*" />
+            <!-- User input -->
+            <RowDefinition Height="Auto" />
+            <!-- Button -->
+            <RowDefinition Height="3*" />
+            <!-- Model output -->
+        </Grid.RowDefinitions>
+
+        <!-- Header -->
+        <TextBlock
+        Grid.Row="0"
+        Text="Gemini helper"
+        FontSize="18"
+        FontWeight="SemiBold"
+        Margin="0,0,0,8" />
+
+        <!-- User input -->
+        <TextBox
+        x:Name="UserInputTextBox"
+        Grid.Row="1"
+        AcceptsReturn="True"
+        TextWrapping="Wrap"
+        VerticalScrollBarVisibility="Auto"
+        MinHeight="80" />
+
+        <!-- Send button -->
+        <StackPanel
+        Grid.Row="2"
+        Orientation="Horizontal"
+        HorizontalAlignment="Right"
+        Margin="0,8,0,8">
+            <Button
+            x:Name="SendButton"
+            Content="Send to Gemini"
+            Padding="12,6"
+            Click="SendButton_Click" />
+        </StackPanel>
+
+        <!-- Model output -->
+        <TextBox
+        x:Name="OutputTextBox"
+        Grid.Row="3"
+        IsReadOnly="True"
+        AcceptsReturn="True"
+        TextWrapping="Wrap"
+        VerticalScrollBarVisibility="Auto"
+        MinHeight="120" />
+    </Grid>
+
+</Window>

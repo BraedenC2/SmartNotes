@@ -15,6 +15,10 @@
   </ItemGroup>
 
   <ItemGroup>
+    <PackageReference Include="Google.GenAI" Version="0.4.0" />
+  </ItemGroup>
+
+  <ItemGroup>
     <Resource Include="Assets\SmartNotesLogo.png" />
     <Resource Include="Assets\SmartNotesLogoTrans.png" />
     <Resource Include="SmartNotesLogoTrans.png" />

@@ -3,6 +3,9 @@ using System.Linq;
 using System.Windows;
 using System.Windows.Controls;
 using System.Windows.Media;
+using System.Collections.Generic;
+using System.IO;
+using Microsoft.Win32;
 
 
 namespace SmartNotes
@@ -41,9 +44,9 @@ namespace SmartNotes
             // Just placeholders right now!
             ActiveCardsItemsControl.ItemsSource = new[]
             {
-                new StudyCard("Sample Card 1", "Japanese • N5", "おはよう — Basic greeting used in the morning."),
-                new StudyCard("Sample Card 2", "Algorithms", "Define Big-O notation in your own words."),
-                new StudyCard("Sample Card 3", "Korean", "안녕하세요 — Polite hello, used in most situations.")
+                new StudyCard("Title", "Term/topic", "Defintion/example"),
+                new StudyCard("Sample Card 1", "Algorithms", "Define Big-O notation in your own words."),
+                new StudyCard("Sample Card 2", "Korean", "안녕하세요 - Polite hello, used in most situations.")
             };
         }
 
@@ -188,10 +191,15 @@ namespace SmartNotes
 
         private void NewCardButton_Click(object sender, RoutedEventArgs e)
         {
-            // TODO: open a card editor/creator anchored to the current study set.
-            MessageBox.Show("Card creator UI goes here (linked to the selected study set).",
-                            "SmartNotes", MessageBoxButton.OK, MessageBoxImage.Information);
+            // For now, New Card opens the Gemini helper window.
+            var window = new GeminiChatWindow
+            {
+                Owner = this
+            };
+
+            window.ShowDialog();
         }
+
 
         private void UploadImageButton_Click(object sender, RoutedEventArgs e)
         {
