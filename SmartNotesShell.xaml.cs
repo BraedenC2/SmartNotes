@@ -23,7 +23,6 @@ namespace SmartNotes
 
             InitHeader();
             InitSampleCards();
-            // TODO: Load study sets + cards from Firebase for this user (_auth.LocalId / _auth.Email)
         }
 
         private void InitHeader()
@@ -191,7 +190,6 @@ namespace SmartNotes
 
         private void NewCardButton_Click(object sender, RoutedEventArgs e)
         {
-            // For now, New Card opens the Gemini helper window.
             var window = new GeminiChatWindow
             {
                 Owner = this
@@ -212,9 +210,12 @@ namespace SmartNotes
 
         private void ViewAllCardsButton_Click(object sender, RoutedEventArgs e)
         {
-            // TODO: navigate to a full “all cards” view for the selected study set.
-            MessageBox.Show("Full list of cards for the active study set will go here.",
-                            "SmartNotes", MessageBoxButton.OK, MessageBoxImage.Information);
+            var window = new AllCardsWindow
+            {
+                Owner = this
+            };
+
+            window.ShowDialog();
         }
 
         // TODO: More handlers for card interactions (edit, delete, study mode, etc.) can go here.

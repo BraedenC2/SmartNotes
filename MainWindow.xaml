@@ -9,7 +9,6 @@
         Background="Transparent">
 
     <Window.Resources>
-        <!-- Helpers -->
         <local:EmptyToVisibilityConverter x:Key="EmptyToVisibilityConverter"/>
 
         <!-- Palette tuned to LOGO -->

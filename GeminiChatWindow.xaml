@@ -10,48 +10,55 @@
         <Grid.RowDefinitions>
             <RowDefinition Height="Auto" />
             <!-- Title -->
-            <RowDefinition Height="2*" />
-            <!-- User input -->
+            <RowDefinition Height="Auto" />
+            <!-- Label -->
+            <RowDefinition Height="Auto" />
+            <!-- Input -->
             <RowDefinition Height="Auto" />
             <!-- Button -->
-            <RowDefinition Height="3*" />
-            <!-- Model output -->
+            <RowDefinition Height="*" />
+            <!-- Output -->
         </Grid.RowDefinitions>
 
         <!-- Header -->
         <TextBlock
         Grid.Row="0"
-        Text="Gemini helper"
+        Text="Create Spanish flashcard"
         FontSize="18"
         FontWeight="SemiBold"
         Margin="0,0,0,8" />
 
-        <!-- User input -->
+        <!-- Label -->
+        <TextBlock
+        Grid.Row="1"
+        Text="English word:"
+        Margin="0,0,0,4" />
+
+        <!-- User input: single word -->
         <TextBox
         x:Name="UserInputTextBox"
-        Grid.Row="1"
-        AcceptsReturn="True"
-        TextWrapping="Wrap"
-        VerticalScrollBarVisibility="Auto"
-        MinHeight="80" />
-
-        <!-- Send button -->
-        <StackPanel
         Grid.Row="2"
+        TextWrapping="NoWrap"
+        VerticalAlignment="Top"
+        MinWidth="200" />
+
+        <!-- Generate button -->
+        <StackPanel
+        Grid.Row="3"
         Orientation="Horizontal"
         HorizontalAlignment="Right"
         Margin="0,8,0,8">
             <Button
             x:Name="SendButton"
-            Content="Send to Gemini"
+            Content="Generate card"
             Padding="12,6"
             Click="SendButton_Click" />
         </StackPanel>
 
-        <!-- Model output -->
+        <!-- Card preview / status -->
         <TextBox
         x:Name="OutputTextBox"
-        Grid.Row="3"
+        Grid.Row="4"
         IsReadOnly="True"
         AcceptsReturn="True"
         TextWrapping="Wrap"

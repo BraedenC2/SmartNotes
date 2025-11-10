@@ -11,6 +11,9 @@ using System.Windows.Input;
 using System.Windows.Media;
 using System.Windows.Media.Imaging;
 using System.Windows.Shapes;
+using System;
+using System.Windows;
+
 
 namespace SmartNotes
 {
@@ -23,12 +26,22 @@ namespace SmartNotes
 
         private async void SendButton_Click(object sender, RoutedEventArgs e)
         {
-            var userText = UserInputTextBox.Text;
+            var englishWord = UserInputTextBox.Text.Trim();
 
-            if (string.IsNullOrWhiteSpace(userText))
+            if (string.IsNullOrWhiteSpace(englishWord))
             {
                 MessageBox.Show(
-                    "Type something before sending.",
+                    "Please enter a word in English",
+                    "SmartNotes",
+                    MessageBoxButton.OK,
+                    MessageBoxImage.Information);
+                return;
+            }
+
+            if (englishWord.Contains(" "))
+            {
+                MessageBox.Show(
+                    "Please enter just a single word (no spaces).",
                     "SmartNotes",
                     MessageBoxButton.OK,
                     MessageBoxImage.Information);
@@ -39,9 +52,42 @@ namespace SmartNotes
 
             try
             {
-                OutputTextBox.Text = "Thinking...";
-                var reply = await GeminiService.SendAsync(userText);
-                OutputTextBox.Text = reply;
+                OutputTextBox.Text = "Creating your card...";
+
+                var cardData = await GeminiService.GenerateSpanishCardAsync(englishWord);
+
+                if (cardData == null)
+                {
+                    OutputTextBox.Text = "Apologies! A card could not be created.";
+                    return;
+                }
+
+                var card = new LanguageFlashcard
+                {
+                    Id = Guid.NewGuid(),
+                    FrontLanguage = "en",
+                    BackLanguage = "es",
+                    FrontText = cardData.EnglishWord,
+                    BackText =
+                        $"{cardData.SpanishTranslation}\n\n" +
+                        $"Example (ES): {cardData.SpanishExampleSentence}\n" +
+                        $"Example (EN): {cardData.EnglishExampleSentence}\n\n" +
+                        $"Usage: {cardData.UsageNotes}",
+                    EnglishWord = cardData.EnglishWord,
+                    SpanishWord = cardData.SpanishTranslation,
+                    SpanishExampleSentence = cardData.SpanishExampleSentence,
+                    EnglishExampleSentence = cardData.EnglishExampleSentence,
+                    UsageNotes = cardData.UsageNotes,
+                    CreatedUtc = DateTime.UtcNow
+                };
+
+                LocalCardStorage.SaveCard(card);
+
+                OutputTextBox.Text =
+                    "Card saved!\n\n" +
+                    $"Front: {card.FrontText}\n\n" +
+                    "Back:\n" +
+                    card.BackText;
             }
             finally
             {
