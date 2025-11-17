@@ -5,8 +5,69 @@
         xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
         xmlns:local="clr-namespace:SmartNotes"
         mc:Ignorable="d"
-        Title="GeminiChatWindow" Height="450" Width="800">
-    <Grid Margin="16">
+        Title="GeminiChatWindow"
+        Height="450"
+        Width="800"
+        WindowStartupLocation="CenterScreen"
+        ResizeMode="CanResize"
+        Background="Transparent">
+
+    <Window.Resources>
+        <!-- COLOR PALETTE -->
+        <SolidColorBrush x:Key="BgCream" Color="#F5F2E9"/>
+        <SolidColorBrush x:Key="Ink" Color="#424242"/>
+        <SolidColorBrush x:Key="InkSoft" Color="#6A6A6A"/>
+        <SolidColorBrush x:Key="CardFill" Color="#FFFFFFFF"/>
+        <SolidColorBrush x:Key="CardStroke" Color="#19000000"/>
+        <SolidColorBrush x:Key="FieldFill" Color="#0D000000"/>
+        <SolidColorBrush x:Key="BtnNormal" Color="#424242"/>
+
+        <!-- PILL BUTTON -->
+        <Style x:Key="PillButton" TargetType="Button">
+            <Setter Property="Foreground" Value="{StaticResource Ink}"/>
+            <Setter Property="Background" Value="{StaticResource CardFill}"/>
+            <Setter Property="BorderBrush" Value="{StaticResource CardStroke}"/>
+            <Setter Property="BorderThickness" Value="1"/>
+
+            <Setter Property="FontWeight" Value="SemiBold"/>
+            <Setter Property="FontSize" Value="14"/>
+            <Setter Property="Padding" Value="10,6"/>
+            <Setter Property="Margin" Value="6,0"/>
+            <Setter Property="Cursor" Value="Hand"/>
+
+            <Setter Property="Template">
+                <Setter.Value>
+                    <ControlTemplate TargetType="Button">
+                        <Border x:Name="Root"
+                                CornerRadius="8"
+                                Background="{TemplateBinding Background}"
+                                BorderBrush="{TemplateBinding BorderBrush}"
+                                BorderThickness="{TemplateBinding BorderThickness}">
+                            <ContentPresenter HorizontalAlignment="Center"
+                                              VerticalAlignment="Center"
+                                              Margin="4,0,4,0"/>
+                        </Border>
+
+                        <ControlTemplate.Triggers>
+                            <Trigger Property="IsMouseOver" Value="True">
+                                <Setter TargetName="Root"
+                                        Property="Background"
+                                        Value="{StaticResource BtnNormal}"/>
+                                <Setter Property="Foreground" Value="White"/>
+                            </Trigger>
+
+                            <Trigger Property="IsEnabled" Value="False">
+                                <Setter Property="Opacity" Value="0.6"/>
+                            </Trigger>
+                        </ControlTemplate.Triggers>
+                    </ControlTemplate>
+                </Setter.Value>
+            </Setter>
+        </Style>
+    </Window.Resources>
+
+    <Grid Margin="24"
+          Background="{StaticResource BgCream}">
         <Grid.RowDefinitions>
             <RowDefinition Height="Auto" />
             <!-- Title -->
@@ -22,48 +83,67 @@
 
         <!-- Header -->
         <TextBlock
-        Grid.Row="0"
-        Text="Create Spanish flashcard"
-        FontSize="18"
-        FontWeight="SemiBold"
-        Margin="0,0,0,8" />
+            Grid.Row="0"
+            Text="Create Spanish flashcard"
+            FontSize="22"
+            FontWeight="Bold"
+            Foreground="{StaticResource Ink}"
+            Margin="0,0,0,12" />
 
         <!-- Label -->
         <TextBlock
-        Grid.Row="1"
-        Text="English word:"
-        Margin="0,0,0,4" />
+            Grid.Row="1"
+            Text="English word:"
+            FontSize="13"
+            Foreground="{StaticResource InkSoft}"
+            Margin="0,0,0,6" />
 
         <!-- User input: single word -->
         <TextBox
-        x:Name="UserInputTextBox"
-        Grid.Row="2"
-        TextWrapping="NoWrap"
-        VerticalAlignment="Top"
-        MinWidth="200" />
+            x:Name="UserInputTextBox"
+            Grid.Row="2"
+            TextWrapping="NoWrap"
+            VerticalAlignment="Top"
+            MinWidth="260"
+            Height="34"
+            Padding="10,4"
+            Margin="0,0,0,8"
+            Background="{StaticResource FieldFill}"
+            BorderBrush="{StaticResource CardStroke}"
+            BorderThickness="1"
+            Foreground="{StaticResource Ink}"
+            FontSize="14" />
 
         <!-- Generate button -->
         <StackPanel
-        Grid.Row="3"
-        Orientation="Horizontal"
-        HorizontalAlignment="Right"
-        Margin="0,8,0,8">
+            Grid.Row="3"
+            Orientation="Horizontal"
+            HorizontalAlignment="Right"
+            Margin="0,4,0,8">
             <Button
-            x:Name="SendButton"
-            Content="Generate card"
-            Padding="12,6"
-            Click="SendButton_Click" />
+                x:Name="SendButton"
+                Content="Generate card"
+                Padding="12,6"
+                Style="{StaticResource PillButton}"
+                Click="SendButton_Click" />
         </StackPanel>
 
         <!-- Card preview / status -->
         <TextBox
-        x:Name="OutputTextBox"
-        Grid.Row="4"
-        IsReadOnly="True"
-        AcceptsReturn="True"
-        TextWrapping="Wrap"
-        VerticalScrollBarVisibility="Auto"
-        MinHeight="120" />
+            x:Name="OutputTextBox"
+            Grid.Row="4"
+            IsReadOnly="True"
+            AcceptsReturn="True"
+            TextWrapping="Wrap"
+            VerticalScrollBarVisibility="Auto"
+            MinHeight="120"
+            Margin="0,4,0,0"
+            Padding="12"
+            Background="{StaticResource CardFill}"
+            BorderBrush="{StaticResource CardStroke}"
+            BorderThickness="1"
+            Foreground="{StaticResource Ink}"
+            FontSize="13" />
     </Grid>
 
 </Window>
