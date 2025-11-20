@@ -14,7 +14,8 @@ namespace SmartNotes
     {
         private readonly FirebaseAuthService.AuthResult _auth;
 
-        private sealed record StudyCard(string Title, string Subtitle, string Preview);
+        // Added "Type" to distinguish normal cards from the Review button
+        private sealed record StudyCard(string Title, string Subtitle, string Preview, string Type = "Normal");
 
         public SmartNotesShell(FirebaseAuthService.AuthResult auth)
         {
@@ -40,13 +41,45 @@ namespace SmartNotes
 
         private void InitSampleCards()
         {
-            // Just placeholders right now!
-            ActiveCardsItemsControl.ItemsSource = new[]
+            // We add a special card at the top for the Study Session
+            var cards = new List<StudyCard>
+        {
+            // The "Review" Action Card
+            new StudyCard("Review Session", "All Cards", "Click here to study all your saved cards randomly.", "ReviewAction"),
+            
+            // Placeholders
+            new StudyCard("Sample Card 1", "Algorithms", "Define Big-O notation in your own words."),
+            new StudyCard("Sample Card 2", "Korean", "안녕하세요 - Polite hello, used in most situations.")
+        };
+
+            ActiveCardsItemsControl.ItemsSource = cards;
+        }
+
+        // ---------------------------------------------------------
+        // IMPORTANT: You need to bind the Click/MouseUp event 
+        // of the buttons in your ActiveCardsItemsControl XAML 
+        // to this method for this to work!
+        // ---------------------------------------------------------
+        private void Card_Click(object sender, RoutedEventArgs e)
+        {
+            // Check what was clicked. 
+            // Assuming the sender is the Button or element holding the DataContext
+            if (sender is FrameworkElement element && element.DataContext is StudyCard card)
             {
-                new StudyCard("Title", "Term/topic", "Defintion/example"),
-                new StudyCard("Sample Card 1", "Algorithms", "Define Big-O notation in your own words."),
-                new StudyCard("Sample Card 2", "Korean", "안녕하세요 - Polite hello, used in most situations.")
-            };
+                if (card.Type == "ReviewAction")
+                {
+                    // Open the new Study Window
+                    var studyWin = new StudyWindow();
+                    studyWin.Owner = this;
+                    studyWin.ShowDialog();
+                }
+                else
+                {
+                    // Just a placeholder action for normal sample cards
+                    // Or maybe open "View All Cards" focused on this one later
+                    MessageBox.Show($"You clicked on {card.Title}. Functionality coming soon!", "SmartNotes");
+                }
+            }
         }
 
         private string? PromptForStudySetName()
@@ -112,17 +145,10 @@ namespace SmartNotes
             Grid.SetRow(buttonsPanel, 2);
             root.Children.Add(buttonsPanel);
 
-            // Might change to sender, e, but this lambda is new and cool to me:
             okButton.Click += (_, __) =>
             {
                 if (string.IsNullOrWhiteSpace(textBox.Text))
                 {
-                    // [redacted] for now
-                    //MessageBox.Show(dialog,
-                    //    "",
-                    //    "SmartNotes",
-                    //    MessageBoxButton.OK,
-                    //    MessageBoxImage.Information);
                     return;
                 }
 
@@ -146,8 +172,6 @@ namespace SmartNotes
 
         private void MenuToggleButton_Click(object sender, RoutedEventArgs e)
         {
-            // Quick toggle. I might add an storyboard animation for this later! Small stretch goal I will say. 
-            // rn it just simply expands/collapses instantly for the popup side, for the sets. 
             if (SideMenuColumn.Width.Value == 0)
             {
                 SideMenuColumn.Width = new GridLength(260);
@@ -163,13 +187,9 @@ namespace SmartNotes
             var name = PromptForStudySetName();
             if (string.IsNullOrWhiteSpace(name)) return;
 
-            // Right now, it just adds it to the list visually, not functionally. 
             var item = new ListBoxItem { Content = name };
             StudySetsListBox.Items.Add(item);
             StudySetsListBox.SelectedItem = item;
-
-            // TODO: save this new study set to the user's Firebase database
-            //       and load them from Firebase on startup instead of hard-coded items.
         }
 
 
@@ -183,7 +203,6 @@ namespace SmartNotes
             }
 
             var selected = StudySetsListBox.SelectedItem;
-            // TODO: confirm + delete from Firebase
             MessageBox.Show($"Later, delete '{selected}' from Firebase here.",
                             "SmartNotes", MessageBoxButton.OK, MessageBoxImage.Information);
         }
@@ -201,9 +220,6 @@ namespace SmartNotes
 
         private void UploadImageButton_Click(object sender, RoutedEventArgs e)
         {
-            // TODO: 1) Open file dialog
-            //       2) Upload image to storage (e.g., Firebase Storage)
-            //       3) Call Vertex AI to generate notes/cards
             MessageBox.Show("Image upload + Vertex AI note creation will plug in here.",
                             "SmartNotes", MessageBoxButton.OK, MessageBoxImage.Information);
         }
@@ -217,8 +233,5 @@ namespace SmartNotes
 
             window.ShowDialog();
         }
-
-        // TODO: More handlers for card interactions (edit, delete, study mode, etc.) can go here.
-        // ALSO: Actually implement studying lol. 
     }
 }

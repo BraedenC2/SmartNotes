@@ -149,35 +149,44 @@
         </Style>
 
         <!-- Card template for "currently studying" cards -->
+        <!-- Card template for "currently studying" cards -->
         <DataTemplate x:Key="StudyCardTemplate">
-            <Border Width="220" Height="140"
-                    Margin="10"
-                    CornerRadius="12"
-                    Background="{StaticResource CardFill}"
-                    BorderBrush="{StaticResource CardStroke}"
-                    BorderThickness="1">
-                <Border.Effect>
-                    <DropShadowEffect BlurRadius="12" ShadowDepth="3" Opacity="0.18"/>
-                </Border.Effect>
-                <StackPanel Margin="12">
-                    <TextBlock Text="{Binding Title}"
-                               FontWeight="SemiBold"
-                               FontSize="15"
-                               Foreground="{StaticResource Ink}"
-                               TextTrimming="CharacterEllipsis"/>
-                    <TextBlock Text="{Binding Subtitle}"
-                               Margin="0,4,0,0"
-                               FontSize="12"
-                               Foreground="{StaticResource InkSoft}"
-                               TextTrimming="CharacterEllipsis"/>
-                    <TextBlock Text="{Binding Preview}"
-                               Margin="0,10,0,0"
-                               FontSize="12"
-                               Foreground="{StaticResource Ink}"
-                               TextWrapping="Wrap"
-                               TextTrimming="CharacterEllipsis"/>
-                </StackPanel>
-            </Border>
+            <!-- We make the root a Button so it is clickable -->
+            <Button Click="Card_Click" Cursor="Hand">
+                <Button.Template>
+                    <ControlTemplate TargetType="Button">
+                        <!-- This is your original visual design, now serving as the button's skin -->
+                        <Border Width="220" Height="140"
+                                Margin="10"
+                                CornerRadius="12"
+                                Background="{StaticResource CardFill}"
+                                BorderBrush="{StaticResource CardStroke}"
+                                BorderThickness="1">
+                            <Border.Effect>
+                                <DropShadowEffect BlurRadius="12" ShadowDepth="3" Opacity="0.18"/>
+                            </Border.Effect>
+                            <StackPanel Margin="12">
+                                <TextBlock Text="{Binding Title}"
+                                           FontWeight="SemiBold"
+                                           FontSize="15"
+                                           Foreground="{StaticResource Ink}"
+                                           TextTrimming="CharacterEllipsis"/>
+                                <TextBlock Text="{Binding Subtitle}"
+                                           Margin="0,4,0,0"
+                                           FontSize="12"
+                                           Foreground="{StaticResource InkSoft}"
+                                           TextTrimming="CharacterEllipsis"/>
+                                <TextBlock Text="{Binding Preview}"
+                                           Margin="0,10,0,0"
+                                           FontSize="12"
+                                           Foreground="{StaticResource Ink}"
+                                           TextWrapping="Wrap"
+                                           TextTrimming="CharacterEllipsis"/>
+                            </StackPanel>
+                        </Border>
+                    </ControlTemplate>
+                </Button.Template>
+            </Button>
         </DataTemplate>
 
         <!-- Icon Button Properties -->
