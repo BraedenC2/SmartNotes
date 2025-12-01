@@ -66,7 +66,7 @@
         </Style>
     </Window.Resources>
 
-    <Grid Margin="24"
+    <Grid Margin="0"
           Background="{StaticResource BgCream}">
         <Grid.RowDefinitions>
             <RowDefinition Height="Auto" />

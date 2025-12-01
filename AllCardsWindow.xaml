@@ -3,9 +3,20 @@
         xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
         xmlns:local="clr-namespace:SmartNotes"
         Title="All Cards"
-        Height="450"
-        Width="800">
-    <Grid Margin="16">
+        Height="550"
+        Width="900"
+        WindowStartupLocation="CenterScreen"
+>
+
+    <Window.Resources>
+        <SolidColorBrush x:Key="BgCream" Color="#F5F2E9"/>
+        <SolidColorBrush x:Key="Ink" Color="#424242"/>
+        <SolidColorBrush x:Key="CardFill" Color="#FFFFFFFF"/>
+        <SolidColorBrush x:Key="CardStroke" Color="#19000000"/>
+
+    </Window.Resources>
+
+    <Grid Margin="24">
         <Grid.RowDefinitions>
             <RowDefinition Height="Auto" />
             <RowDefinition Height="*" />
@@ -13,40 +24,79 @@
 
         <TextBlock
             Grid.Row="0"
-            Text="All cards"
-            FontSize="18"
-            FontWeight="SemiBold"
-            Margin="0,0,0,8" />
+            Text="My Collection"
+            FontSize="24"
+            FontWeight="Bold"
+            Foreground="{StaticResource Ink}"
+            Margin="0,0,0,16" />
 
         <ListBox
             x:Name="CardsListBox"
             Grid.Row="1"
-            ScrollViewer.HorizontalScrollBarVisibility="Auto"
-            ScrollViewer.VerticalScrollBarVisibility="Disabled">
+            Background="Transparent"
+            BorderThickness="0"
+            ScrollViewer.HorizontalScrollBarVisibility="Disabled"
+            ScrollViewer.VerticalScrollBarVisibility="Auto">
+
             <ListBox.ItemsPanel>
                 <ItemsPanelTemplate>
                     <WrapPanel Orientation="Horizontal" />
                 </ItemsPanelTemplate>
             </ListBox.ItemsPanel>
 
+            <ListBox.ItemContainerStyle>
+                <Style TargetType="ListBoxItem">
+                    <Setter Property="Background" Value="Transparent"/>
+                    <Setter Property="BorderThickness" Value="0"/>
+                    <Setter Property="Template">
+                        <Setter.Value>
+                            <ControlTemplate TargetType="ListBoxItem">
+                                <ContentPresenter />
+                            </ControlTemplate>
+                        </Setter.Value>
+                    </Setter>
+                </Style>
+            </ListBox.ItemContainerStyle>
+
             <ListBox.ItemTemplate>
                 <DataTemplate DataType="{x:Type local:LanguageFlashcard}">
                     <Border
-                        Width="260"
-                        Padding="8"
-                        Margin="0,0,8,8"
-                        Background="#11FFFFFF"
-                        CornerRadius="6">
+                        Width="240"
+                        Height="150"
+                        Margin="0,0,16,16"
+                        Padding="16"
+                        Background="{StaticResource CardFill}"
+                        BorderBrush="{StaticResource CardStroke}"
+                        BorderThickness="1"
+                        CornerRadius="12">
+
+                        <Border.Effect>
+                            <DropShadowEffect BlurRadius="15" ShadowDepth="4" Opacity="0.1" Color="#000000"/>
+                        </Border.Effect>
+
                         <Button
                             Padding="0"
                             Background="Transparent"
                             BorderThickness="0"
-                            HorizontalContentAlignment="Stretch"
+                            HorizontalContentAlignment="Center"
+                            VerticalContentAlignment="Center"
+                            Cursor="Hand"
                             Click="CardButton_Click">
+
+                            <Button.Template>
+                                <ControlTemplate TargetType="Button">
+                                    <ContentPresenter />
+                                </ControlTemplate>
+                            </Button.Template>
+
                             <TextBlock
                                 Text="{Binding FrontText}"
-                                FontSize="16"
-                                TextWrapping="Wrap" />
+                                FontSize="18"
+                                FontWeight="SemiBold"
+                                Foreground="{StaticResource Ink}"
+                                TextWrapping="Wrap"
+                                TextAlignment="Center"
+                                TextTrimming="CharacterEllipsis"/>
                         </Button>
                     </Border>
                 </DataTemplate>
