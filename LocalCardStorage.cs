@@ -19,29 +19,24 @@ namespace SmartNotes
                 "SmartNotes",
                 "Cards");
 
+            //C:\Users\Braed\AppData\Roaming\SmartNotes\Cards
+
             CardsFolderPath = root;
             Directory.CreateDirectory(CardsFolderPath);
         }
 
         public static void SaveCard(LanguageFlashcard card)
         {
-            if (card.Id == Guid.Empty)
-            {
-                card.Id = Guid.NewGuid();
-            }
+            if (card.Id == Guid.Empty) card.Id = Guid.NewGuid();
 
             var path = Path.Combine(CardsFolderPath, $"{card.Id}.json");
 
-            var options = new JsonSerializerOptions
-            {
-                WriteIndented = true
-            };
+            var options = new JsonSerializerOptions { WriteIndented = true };
 
             var json = JsonSerializer.Serialize(card, options);
             File.WriteAllText(path, json);
         }
 
-        // Will be used and ready for ViewAllCards feature and the actual studying feature. 
         public static IEnumerable<LanguageFlashcard> LoadAllCards()
         {
             var list = new List<LanguageFlashcard>();
@@ -56,8 +51,7 @@ namespace SmartNotes
                     var card = JsonSerializer.Deserialize<LanguageFlashcard>(json);
                     if (card != null){list.Add(card);}
                 }
-                catch
-                {}
+                catch{}
             }
 
             return list;

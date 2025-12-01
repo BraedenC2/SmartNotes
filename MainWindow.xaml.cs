@@ -18,12 +18,11 @@ namespace SmartNotes
         // TODO: REMOVE THIS KEY BEFORE PUSHING TO GITHUB DEPLOYMENT!!!
         private const string FirebaseWebApiKey = "";
 
-        // Where we store the refresh token if "Remember me" is checked
         private readonly string TokenFile = Path.Combine(
             Environment.GetFolderPath(Environment.SpecialFolder.LocalApplicationData),
             "SmartNotes", "firebase_session.json");
         //C:\Users\USER\AppData\Local\SmartNotes\firebase_session.json
-        // For future reference, delete this file to sign out the auto-signed-in user.
+        // delete this file to sign out the auto-signed-in user.
 
         public MainWindow()
         {
@@ -31,30 +30,24 @@ namespace SmartNotes
             TryAutoSignIn();
         }
 
-        // Makes the 'Password' text disappear and reappear depending if the user has typed anything
         private void PasswordBox_PasswordChanged(object sender, RoutedEventArgs e)
             => PwdWatermark.Visibility = string.IsNullOrEmpty(PasswordBox.Password) ? Visibility.Visible : Visibility.Collapsed;
 
-        // Handles "Register here" / "Forgot Password" links 
         private async void Link_Click(object sender, System.Windows.Input.MouseButtonEventArgs e)
         {
             var tb = (TextBlock)sender;
             switch (tb.Tag as string)
             {
-                // Switches to registering 
                 case "toggle":
                     ModeToggle.IsChecked = !ModeToggle.IsChecked;
                     StatusText.Text = "";
                     break;
-                // Sends password reset email
                 case "forgot":
                     await SendPasswordReset();
                     break;
             }
         }
 
-        // Login OR Register (depending on ModeToggle)
-        // It is called LoginButton, but it handles both login and registration
         private async void LoginButton_Click(object sender, RoutedEventArgs e)
         {
             DisableUi(true);
@@ -72,13 +65,11 @@ namespace SmartNotes
                 FirebaseAuthService.AuthResult result;
                 if (ModeToggle.IsChecked == true)
                 {
-                    // Register
                     result = await FirebaseAuthService.SignUpWithEmailPasswordAsync(email, pass, FirebaseWebApiKey);
                     StatusText.Text = "Account created. You have been signed in.";
                 }
                 else
                 {
-                    // Login
                     result = await FirebaseAuthService.SignInWithEmailPasswordAsync(email, pass, FirebaseWebApiKey);
                     StatusText.Text = "Welcome back! :)";
                 }
@@ -99,11 +90,6 @@ namespace SmartNotes
             }
         }
 
-        // This exists because I was going to have a guest mode separate from login/register button for testing purposes,
-        // anonymous signing in is STILL possible and is active on my API key and project, however,
-        // I decided to not implement this feature since it could complicate things and confuse me in the future.
-        // This code can be deleted since the UI element currently isn't there to activate it, however,
-        // I wanted to keep it to show that anonymous sign-in is possible with Firebase Auth REST API in my app (technically possible).
         private async void GuestButton_Click(object sender, RoutedEventArgs e)
         {
             DisableUi(true);
@@ -123,7 +109,6 @@ namespace SmartNotes
             }
         }
 
-        // WORKS DO NOT TOUCH!!!
         // For professor:
         // You may have to check your spam/junk folder to see the password reset email if you do try this feature. 
         private async Task SendPasswordReset()
@@ -151,34 +136,23 @@ namespace SmartNotes
             }
         }
 
-        // TODO: Fix email not returned on refresh token exchange
         private async void TryAutoSignIn()
         {
             try
             {
-                // Check for saved refresh token
                 if (!File.Exists(TokenFile)) return;
 
-                // Read all of the saved token information, deserialize, and return if the saved data is invalid
                 var json = await File.ReadAllTextAsync(TokenFile);
                 var saved = JsonSerializer.Deserialize<SavedSession>(json);
                 if (saved?.RefreshToken is null) return;
 
-                // if valid, it will disable the ui to make a network call
                 DisableUi(true);
                 var refreshed = await FirebaseAuthService.ExchangeRefreshTokenAsync(saved.RefreshToken, FirebaseWebApiKey);
                 await HandleSuccessfulSignIn(refreshed, silent: true);
-                //TODO: Email is not returned!!!!!!!!!!!!!
                 StatusText.Text = $"Welcome back{(string.IsNullOrEmpty(refreshed.Email) ? "" : $", {refreshed.Email}")}.";
             }
-            catch
-            {
-                // ignore; user will sign in manually
-            }
-            finally
-            {
-                DisableUi(false);
-            }
+            catch{}
+            finally{DisableUi(false);}
         }
 
 
@@ -187,14 +161,10 @@ namespace SmartNotes
         {
             if (RememberCheck.IsChecked == true)
             {
-                // Makes SURE the directory exists before creating a file in a folder that may not exist yet
                 Directory.CreateDirectory(Path.GetDirectoryName(TokenFile)!);
                 await File.WriteAllTextAsync(TokenFile,
                     JsonSerializer.Serialize(new SavedSession { RefreshToken = result.RefreshToken }));
             }
-
-            //if (!silent)
-            //    MessageBox.Show("Signed in successfully.", "SmartNotes", MessageBoxButton.OK, MessageBoxImage.Information);
 
             var shell = new SmartNotesShell(result);
             shell.Show();
@@ -204,13 +174,11 @@ namespace SmartNotes
 
         private void DisableUi(bool busy)
         {
-            // Does not allow the user to interact with the UI while an auth operation is in progress
             EmailBox.IsEnabled = !busy;
             PasswordBox.IsEnabled = !busy;
             LoginButton.IsEnabled = !busy;
         }
 
-        // Helps deserialize
         private record SavedSession { public string? RefreshToken { get; set; } }
     }
 

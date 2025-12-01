@@ -12,7 +12,6 @@ using System.Windows.Media;
 using System.Windows.Media.Imaging;
 using System.Windows.Shapes;
 using System;
-using System.Windows;
 
 
 namespace SmartNotes
@@ -31,7 +30,7 @@ namespace SmartNotes
             if (string.IsNullOrWhiteSpace(englishWord))
             {
                 MessageBox.Show(
-                    "Please enter a word in English",
+                    "Please enter a single word",
                     "SmartNotes",
                     MessageBoxButton.OK,
                     MessageBoxImage.Information);
@@ -58,7 +57,7 @@ namespace SmartNotes
 
                 if (cardData == null)
                 {
-                    OutputTextBox.Text = "Apologies! A card could not be created.";
+                    OutputTextBox.Text = "Error!";
                     return;
                 }
 
@@ -89,10 +88,7 @@ namespace SmartNotes
                     "Back:\n" +
                     card.BackText;
             }
-            finally
-            {
-                SendButton.IsEnabled = true;
-            }
+            finally { SendButton.IsEnabled = true; }
         }
     }
 }

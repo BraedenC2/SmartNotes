@@ -12,11 +12,8 @@ namespace SmartNotes
         private const string ApiKey = "";
 
         private static readonly Client _client = new Client(apiKey: ApiKey);
-
-        // Might change the model in the future depending on pricing. 
         private const string ModelName = "gemini-2.0-flash";
 
-        // This might change if I allow other languages in the future. For now its just Spanish.
         public sealed class SpanishCardResponse
         {
             [JsonPropertyName("english_word")]
@@ -43,19 +40,19 @@ namespace SmartNotes
             var trimmed = englishWord.Trim();
 
             var prompt = $@"
-You are a helpful Spanish tutor.
+                You are a helpful Spanish tutor.
 
-For the single English word ""{trimmed}"", create information for a language flashcard.
+                For the single English word ""{trimmed}"", create information for a language flashcard.
 
-Return ONLY a single JSON object with this exact shape, no extra text, no comments, no code fences:
+                Return ONLY a single JSON object with this exact shape, no extra text, no comments, no code fences:
 
-{{
-  ""english_word"": ""the original English word"",
-  ""spanish_translation"": ""the main Spanish translation"",
-  ""spanish_example_sentence"": ""a natural Spanish example sentence using the Spanish word"",
-  ""english_example_sentence"": ""an English translation of that example sentence"",
-  ""usage_notes"": ""a short explanation of how this word is used (grammar, register, common patterns)""
-}}";
+                {{
+                    ""english_word"": ""the original English word"",
+                    ""spanish_translation"": ""the main Spanish translation"",
+                    ""spanish_example_sentence"": ""a natural Spanish example sentence using the Spanish word"",
+                    ""english_example_sentence"": ""an English translation of that example sentence"",
+                    ""usage_notes"": ""a short explanation of how this word is used (grammar, register, common patterns)""
+                }}";
 
             try
             {
@@ -70,7 +67,6 @@ Return ONLY a single JSON object with this exact shape, no extra text, no commen
 
                 text = text.Trim();
 
-                // for jSON wraps in code fences, removal
                 if (text.StartsWith("```"))
                 {
                     var firstNewLine = text.IndexOf('\n');
@@ -109,7 +105,7 @@ Return ONLY a single JSON object with this exact shape, no extra text, no commen
                     contents: userMessage);
 
                 var text = response.Candidates?[0]?.Content?.Parts?[0]?.Text;
-                return text ?? "(Gemini returned no text.)";
+                return text ?? "(Gemini returned no text)";
             }
             catch (Exception ex)
             {

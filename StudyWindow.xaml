@@ -10,7 +10,6 @@
         Background="#FDFDFD"
         >
     <Window.Resources>
-        <!-- Simple styles for the card look -->
         <Style x:Key="CardBorderStyle" TargetType="Border">
             <Setter Property="Background" Value="White"/>
             <Setter Property="CornerRadius" Value="12"/>
@@ -48,7 +47,7 @@
                         <Grid>
                             <ScrollViewer VerticalScrollBarVisibility="Auto" Margin="20">
                                 <TextBlock x:Name="CardContentText" 
-                                       Text="Loading..." 
+                                       Text="Flip to Start" 
                                        TextWrapping="Wrap" 
                                        FontSize="24" 
                                        HorizontalAlignment="Center" 

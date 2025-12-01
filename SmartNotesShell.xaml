@@ -149,13 +149,10 @@
         </Style>
 
         <!-- Card template for "currently studying" cards -->
-        <!-- Card template for "currently studying" cards -->
         <DataTemplate x:Key="StudyCardTemplate">
-            <!-- We make the root a Button so it is clickable -->
             <Button Click="Card_Click" Cursor="Hand">
                 <Button.Template>
                     <ControlTemplate TargetType="Button">
-                        <!-- This is your original visual design, now serving as the button's skin -->
                         <Border Width="220" Height="140"
                                 Margin="10"
                                 CornerRadius="12"

@@ -11,7 +11,7 @@
     <Window.Resources>
         <local:EmptyToVisibilityConverter x:Key="EmptyToVisibilityConverter"/>
 
-        <!-- Palette tuned to LOGO -->
+        <!-- Color Pallet -->
         <SolidColorBrush x:Key="BgCream" Color="#F5F2E9"/>
         <!-- page background -->
         <SolidColorBrush x:Key="Ink" Color="#424242"/>
@@ -139,8 +139,6 @@
                 </Grid.RowDefinitions>
 
                 <!-- SmartNotes LOGO -->
-                <!-- TO DO: Fix the minor folder issue; -->
-                <!-- I have an issue with it displaying through a folder, even though I made both resources -->
                 <Image Grid.Row="0"
                        Source="/SmartNotesLogoTrans.png"
                        Width="340" Height="70"

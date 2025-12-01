@@ -56,30 +56,6 @@ namespace SmartNotes
                 button.Tag = "Front";
             }
         }
-
-
-
-        // Old
-        //private void CardTextBlock_MouseLeftButtonUp(object sender, MouseButtonEventArgs e)
-        //{
-        //    if (sender is not TextBlock textBlock)
-        //        return;
-
-        //    if (textBlock.DataContext is not LanguageFlashcard card)
-        //        return;
-
-        //    var isShowingFront = (string?)textBlock.Tag != "Back";
-
-        //    if (isShowingFront)
-        //    {
-        //        textBlock.Text = card.BackText;
-        //        textBlock.Tag = "Back";
-        //    }
-        //    else
-        //    {
-        //        textBlock.Text = card.FrontText;
-        //        textBlock.Tag = "Front";
-        //    }
     }
 }
 
